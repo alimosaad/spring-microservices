@@ -9,6 +9,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>clients</module>
+    <module>fraud</module>
   </modules>
 
   <name>microservice-with-cloud</name>
