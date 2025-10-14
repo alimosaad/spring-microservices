@@ -1,0 +1,117 @@
+version: '3.8'
+
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: microservice_db
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    networks:
+      - mysqlnet
+    restart: unless-stopped
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - springnet
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3.9.11-management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - springnet
+    restart: unless-stopped
+
+  # eureka-server:
+  #   image: amigoscode/eureka-server:latest
+  #   container_name: eureka-server
+  #   ports:
+  #     - "8761:8761"
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=docker
+  #   networks:
+  #     - springnet
+  #   depends_on:
+  #     - zipkin
+
+  # apigw:
+  #   image: amigoscode/apigw:latest
+  #   container_name: apigw
+  #   ports:
+  #     - "8083:8083"
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=docker
+  #   networks:
+  #     - springnet
+  #   depends_on:
+  #     - zipkin
+  #     - eureka-server
+
+  # customer:
+  #   image: amigoscode/customer:latest
+  #   container_name: customer
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=docker
+  #   networks:
+  #     - springnet
+  #     - mysqlnet
+  #   depends_on:
+  #     - zipkin
+  #     - mysql
+  #     - rabbitmq
+
+  # fraud:
+  #   image: amigoscode/fraud:latest
+  #   container_name: fraud
+  #   ports:
+  #     - "8081:8081"
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=docker
+  #   networks:
+  #     - springnet
+  #     - mysqlnet
+  #   depends_on:
+  #     - zipkin
+  #     - mysql
+  #     - rabbitmq
+
+  # notification:
+  #   image: amigoscode/notification:latest
+  #   container_name: notification
+  #   ports:
+  #     - "8082:8082"
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=docker
+  #   networks:
+  #     - springnet
+  #     - mysqlnet
+  #   depends_on:
+  #     - zipkin
+  #     - mysql
+  #     - rabbitmq
+
+networks:
+  mysqlnet:
+    driver: bridge
+  springnet:
+    driver: bridge
+
+volumes:
+  mysql_data:
