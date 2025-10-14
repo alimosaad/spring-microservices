@@ -1,41 +1,41 @@
-version: '3.8'
-
 services:
   mysql:
     container_name: mysql
-    image: mysql:8.0
+    image: mysql:8.3.0
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: microservice_db
-      MYSQL_USER: docker
-      MYSQL_PASSWORD: docker
-      
+      #MYSQL_DATABASE: microservice_db
+      #MYSQL_USER: root
+      #MYSQL_PASSWORD: password
+      # delete this lines because there are changeable. and provide it in yml file
+
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ./mysql:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - "3307:3306"
-    networks:
-      - mysqlnet
+      - "3306:3306"
+    #networks:
+     # - mysqlnet
     restart: unless-stopped
 
-  zipkin:
-    image: openzipkin/zipkin
-    container_name: zipkin
-    ports:
-      - "9411:9411"
-    networks:
-      - springnet
-    restart: unless-stopped
+  #zipkin:
+  #  image: openzipkin/zipkin
+  #  container_name: zipkin
+  #  ports:
+  #    - "9411:9411"
+  #  networks:
+  #    - springnet
+  #  restart: unless-stopped
 
-  rabbitmq:
-    image: rabbitmq:3.9.11-management-alpine
-    container_name: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    networks:
-      - springnet
-    restart: unless-stopped
+  #rabbitmq:
+  #  image: rabbitmq:3.9.11-management-alpine
+  #  container_name: rabbitmq
+  #  ports:
+  #    - "5672:5672"
+  #    - "15672:15672"
+  #  networks:
+  #    - springnet
+  #  restart: unless-stopped
 
   # eureka-server:
   #   image: amigoscode/eureka-server:latest
@@ -107,11 +107,11 @@ services:
   #     - mysql
   #     - rabbitmq
 
-networks:
-  mysqlnet:
-    driver: bridge
-  springnet:
-    driver: bridge
+#networks:
+#  mysqlnet:
+#    driver: bridge
+#  springnet:
+#    driver: bridge
 
-volumes:
-  mysql_data:
+#volumes:
+#  mysql_data:
