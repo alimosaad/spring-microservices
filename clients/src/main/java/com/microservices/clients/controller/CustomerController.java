@@ -1,7 +1,8 @@
 package com.microservices.clients.controller;
 
+import com.microservices.clients.services.CustomerRegistrationRequest;
+import com.microservices.clients.services.CustomerService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
