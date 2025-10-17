@@ -10,6 +10,7 @@
   <modules>
     <module>clients</module>
     <module>fraud</module>
+    <module>eureka-server</module>
   </modules>
 
   <name>microservice-with-cloud</name>
